@@ -20,9 +20,9 @@
 
 **Post Release :**
 
-  1. Update ravencoin.org with correct popup version
+  1. Update blackraven.network with correct popup version
   
-  2. Update ravencoin.org with correct release download urls for each platform (Windows, Linux, Mac)
+  2. Update blackraven.network with correct release download urls for each platform (Windows, Linux, Mac)
 
 **Build Process**
 

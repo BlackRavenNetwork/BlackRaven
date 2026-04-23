@@ -88,7 +88,7 @@
 // Application startup time (used for uptime calculation)
 const int64_t nStartupTime = GetTime();
 
-const char *const RAVEN_CONF_FILENAME = "raven.conf";
+const char *const RAVEN_CONF_FILENAME = "blackraven.conf";
 const char *const RAVEN_PID_FILENAME = "ravend.pid";
 
 ArgsManager gArgs;
@@ -530,7 +530,7 @@ static std::string FormatException(const std::exception *pex, const char *pszThr
     char pszModule[MAX_PATH] = "";
     GetModuleFileNameA(nullptr, pszModule, sizeof(pszModule));
 #else
-    const char *pszModule = "raven";
+    const char *pszModule = "blackraven";
 #endif
     if (pex)
         return strprintf(
@@ -549,13 +549,13 @@ void PrintExceptionContinue(const std::exception *pex, const char *pszThread)
 
 fs::path GetDefaultDataDir()
 {
-    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Raven
-    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Raven
-    // Mac: ~/Library/Application Support/Raven
-    // Unix: ~/.raven
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\BlackRaven
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\BlackRaven
+    // Mac: ~/Library/Application Support/BlackRaven
+    // Unix: ~/.blackraven
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Raven";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "BlackRaven";
 #else
     fs::path pathRet;
     char *pszHome = getenv("HOME");
@@ -565,10 +565,10 @@ fs::path GetDefaultDataDir()
         pathRet = fs::path(pszHome);
 #ifdef MAC_OSX
     // Mac
-    return pathRet / "Library/Application Support/Raven";
+    return pathRet / "Library/Application Support/BlackRaven";
 #else
     // Unix
-    return pathRet / ".raven";
+    return pathRet / ".blackraven";
 #endif
 #endif
 }
@@ -630,7 +630,7 @@ void ArgsManager::ReadConfigFile(const std::string &confPath)
 {
     fs::ifstream streamConfig(GetConfigFile(confPath));
     if (!streamConfig.good())
-        return; // No raven.conf file is OK
+        return; // No blackraven.conf file is OK
 
     {
         LOCK(cs_args);
@@ -639,7 +639,7 @@ void ArgsManager::ReadConfigFile(const std::string &confPath)
 
         for (boost::program_options::detail::config_file_iterator it(streamConfig, setOptions), end; it != end; ++it)
         {
-            // Don't overwrite existing settings so command line settings override raven.conf
+            // Don't overwrite existing settings so command line settings override blackraven.conf
             std::string strKey = std::string("-") + it->string_key;
             std::string strValue = it->value[0];
             InterpretNegativeSetting(strKey, strValue);
@@ -926,10 +926,10 @@ std::string CopyrightHolders(const std::string &strPrefix)
 {
     std::string strCopyrightHolders = strPrefix + strprintf(_(COPYRIGHT_HOLDERS), _(COPYRIGHT_HOLDERS_SUBSTITUTION));
 
-    // Check for untranslated substitution to make sure Raven Core copyright is not removed by accident
-    if (strprintf(COPYRIGHT_HOLDERS, COPYRIGHT_HOLDERS_SUBSTITUTION).find("Raven Core") == std::string::npos)
+    // Check for untranslated substitution to make sure BlackRaven Core copyright is not removed by accident
+    if (strprintf(COPYRIGHT_HOLDERS, COPYRIGHT_HOLDERS_SUBSTITUTION).find("BlackRaven Core") == std::string::npos)
     {
-        strCopyrightHolders += "\n" + strPrefix + "The Raven Core developers";
+        strCopyrightHolders += "\n" + strPrefix + "The BlackRaven Core developers";
     }
     return strCopyrightHolders;
 }

@@ -4,17 +4,17 @@ Raven Core version *0.15.0.1* is now available from:
 
 and
 
-  <https://ravencoin.org/bin/raven-core-0.15.0.1/>
+  <https://blackraven.network/>
 
 This is a minor bug fix for 0.15.0.
 
 Please report bugs using the issue tracker at GitHub:
 
-  <https://github.com/RavenProject/Ravencoin/issues>
+  <https://github.com/BlackRavenNetwork/BlackRaven/issues>
 
 To receive security and update notifications, please subscribe to:
 
-  <https://ravencoin.org/en/list/announcements/join/>
+  <https://blackraven.network/>
 
 How to Upgrade
 ==============

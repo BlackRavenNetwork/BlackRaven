@@ -47,14 +47,14 @@
 #endif
 
 const int RAVEN_IPC_CONNECT_TIMEOUT = 1000; // milliseconds
-const QString RAVEN_IPC_PREFIX("raven:");
+const QString RAVEN_IPC_PREFIX("blackraven:");
 // BIP70 payment protocol messages
 const char* BIP70_MESSAGE_PAYMENTACK = "PaymentACK";
 const char* BIP70_MESSAGE_PAYMENTREQUEST = "PaymentRequest";
 // BIP71 payment protocol media types
-const char* BIP71_MIMETYPE_PAYMENT = "application/raven-payment";
-const char* BIP71_MIMETYPE_PAYMENTACK = "application/raven-paymentack";
-const char* BIP71_MIMETYPE_PAYMENTREQUEST = "application/raven-paymentrequest";
+const char* BIP71_MIMETYPE_PAYMENT = "application/blackraven-payment";
+const char* BIP71_MIMETYPE_PAYMENTACK = "application/blackraven-paymentack";
+const char* BIP71_MIMETYPE_PAYMENTREQUEST = "application/blackraven-paymentrequest";
 
 struct X509StoreDeleter {
       void operator()(X509_STORE* b) {

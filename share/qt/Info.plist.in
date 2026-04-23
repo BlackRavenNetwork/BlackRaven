@@ -29,16 +29,16 @@
   <string>????</string>
 
   <key>CFBundleExecutable</key>
-  <string>Raven-Qt</string>
+  <string>BlackRaven-Qt</string>
   
   <key>CFBundleName</key>
-  <string>Raven-Qt</string>
+  <string>BlackRaven-Qt</string>
 
   <key>LSHasLocalizedDisplayName</key>
   <true/>
 
   <key>CFBundleIdentifier</key>
-  <string>org.ravenfoundation.Raven-Qt</string>
+  <string>network.blackraven.BlackRaven-Qt</string>
 
   <key>CFBundleURLTypes</key>
   <array>

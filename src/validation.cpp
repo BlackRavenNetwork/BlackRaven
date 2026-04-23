@@ -1327,7 +1327,7 @@ CAmount GetBlockSubsidy(int nHeight, const Consensus::Params& consensusParams)
         return 0;
 
     CAmount nSubsidy = 5000 * COIN;
-    // Subsidy is cut in half every 2,100,000 blocks which will occur approximately every 4 years.
+    // Subsidy halves every consensus.nSubsidyHalvingInterval blocks (~5 years on BlackRaven mainnet).
     nSubsidy >>= halvings;
     return nSubsidy;
 }

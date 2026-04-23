@@ -6,7 +6,7 @@
 <p align="center">
 Bruce Fenton<br>
 Tron Black<br>
-http://www.ravencoin.org<br>
+https://blackraven.network/<br>
 3rd April 2018
 </p>
 <p align="center"><i>
@@ -234,8 +234,8 @@ References
 [9] https://www.ethereum.org/  
 [10] W. Dei, “B-Money” [http://www.weidai.com/bmoney.txt](http://www.weidai.com/bmoney.txt)  
 [11] B. Fenton, “Ravencoin: A digital peer to peer network for the facilitation of asset transfers.” https://medium.com/@ravencoin/ravencoin-4683cd00f83c  
-[12] https://github.com/RavenProject/Ravencoin  
-[13] T. Black, J. Weight “X16R” Algorithm White Paper https://ravencoin.org/wp-content/uploads/2018/03/X16R-Whitepaper.pdf  
+[12] https://github.com/BlackRavenNetwork/BlackRaven  
+[13] T. Black, J. Weight “X16R” Algorithm White Paper https://blackraven.network/  
 [14] [http://coinspark.org/developers/assets-introduction/](http://coinspark.org/developers/assets-introduction/)  
 [15] N. Szabo, “Secure Property Titles with Owner Authority” [http://nakamotoinstitute.org/secure-property-titles/#selection-7.7-7.50](http://nakamotoinstitute.org/secure-property-titles/#selection-7.7-7.50)  
 [16] https://www.forbes.com/2008/09/23/naked-shorting-trades-oped-cx_pb_0923byrne.html#63076e102e6c  

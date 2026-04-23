@@ -1,9 +1,9 @@
-Raven Core integration/staging tree
+BlackRaven Core integration/staging tree
 =====================================
 
-https://ravencoin.org
+https://blackraven.network/
 
-To see how to run Ravencoin, please read the respective files in [the doc folder](doc)
+To see how to run BlackRaven, please read the respective files in [the doc folder](doc)
 
 
 What is Ravencoin?
@@ -28,7 +28,7 @@ Development Process
 -------------------
 
 The `master` branch is regularly built and tested, but is not guaranteed to be
-completely stable. [Tags](https://github.com/RavenProject/Ravencoin/tags) are created
+completely stable. [Tags](https://github.com/BlackRavenNetwork/BlackRaven/tags) are created
 regularly to indicate new official, stable release versions of Raven Core.
 
 Active development is done in the `develop` branch. 

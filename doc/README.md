@@ -5,7 +5,7 @@ Setup
 ---------------------
 Ravencoin Core is the original Ravencoin client and it builds the backbone of the network. It downloads and, by default, stores the entire history of Ravencoin transactions; depending on the speed of your computer and network connection, the synchronization process is typically complete in under an hour.
 
-To download compiled binaries of the Ravencoin Core and wallet, visit the [GitHub release page](https://github.com/RavenProject/Ravencoin/releases).
+To download compiled binaries of the Ravencoin Core and wallet, visit the [GitHub release page](https://github.com/BlackRavenNetwork/BlackRaven/releases).
 
 Running
 ---------------------
@@ -107,46 +107,46 @@ Building from source
 ---------------------
 The following are developer notes on how to build the Ravencoin core software on your native platform. They are not complete guides, but include notes on the necessary libraries, compile flags, etc.
 
-- [Dependencies](https://github.com/RavenProject/Ravencoin/tree/master/doc/dependencies.md)
-- [OS X Build Notes](https://github.com/RavenProject/Ravencoin/tree/master/doc/build-osx.md)
-- [Unix Build Notes](https://github.com/RavenProject/Ravencoin/tree/master/doc/build-unix.md)
-- [Windows Build Notes](https://github.com/RavenProject/Ravencoin/tree/master/doc/build-windows.md)
-- [OpenBSD Build Notes](https://github.com/RavenProject/Ravencoin/tree/master/doc/build-openbsd.md)
-- [Gitian Building Guide](https://github.com/RavenProject/Ravencoin/tree/master/doc/gitian-building.md)
+- [Dependencies](https://github.com/BlackRavenNetwork/BlackRaven/tree/master/doc/dependencies.md)
+- [OS X Build Notes](https://github.com/BlackRavenNetwork/BlackRaven/tree/master/doc/build-osx.md)
+- [Unix Build Notes](https://github.com/BlackRavenNetwork/BlackRaven/tree/master/doc/build-unix.md)
+- [Windows Build Notes](https://github.com/BlackRavenNetwork/BlackRaven/tree/master/doc/build-windows.md)
+- [OpenBSD Build Notes](https://github.com/BlackRavenNetwork/BlackRaven/tree/master/doc/build-openbsd.md)
+- [Gitian Building Guide](https://github.com/BlackRavenNetwork/BlackRaven/tree/master/doc/gitian-building.md)
 
 Development
 ---------------------
-Ravencoin repo's [root README](https://github.com/RavenProject/Ravencoin/blob/master/README.md) contains relevant information on the development process and automated testing.
+Ravencoin repo's [root README](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/README.md) contains relevant information on the development process and automated testing.
 
-- [Developer Notes](https://github.com/RavenProject/Ravencoin/blob/master/doc/developer-notes.md)
-- [Release Notes](https://github.com/RavenProject/Ravencoin/blob/master/doc/release-notes.md)
-- [Release Process](https://github.com/RavenProject/Ravencoin/blob/master/doc/release-process.md)
+- [Developer Notes](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/developer-notes.md)
+- [Release Notes](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/release-notes.md)
+- [Release Process](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/release-process.md)
 - [Source Code Documentation (External Link)](https://dev.visucore.com/raven/doxygen/) -- 2018-05-11 -- Broken link
-- [Translation Process](https://github.com/RavenProject/Ravencoin/blob/master/doc/translation_process.md)
-- [Translation Strings Policy](https://github.com/RavenProject/Ravencoin/blob/master/doc/translation_strings_policy.md)
-- [Travis CI](https://github.com/RavenProject/Ravencoin/blob/master/doc/travis-ci.md)
-- [Unauthenticated REST Interface](https://github.com/RavenProject/Ravencoin/blob/master/doc/REST-interface.md)
-- [Shared Libraries](https://github.com/RavenProject/Ravencoin/blob/master/doc/shared-libraries.md)
-- [BIPS](https://github.com/RavenProject/Ravencoin/blob/master/doc/bips.md)
-- [Dnsseed Policy](https://github.com/RavenProject/Ravencoin/blob/master/doc/dnsseed-policy.md)
-- [Benchmarking](https://github.com/RavenProject/Ravencoin/blob/master/doc/benchmarking.md)
+- [Translation Process](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/translation_process.md)
+- [Translation Strings Policy](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/translation_strings_policy.md)
+- [Travis CI](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/travis-ci.md)
+- [Unauthenticated REST Interface](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/REST-interface.md)
+- [Shared Libraries](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/shared-libraries.md)
+- [BIPS](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/bips.md)
+- [Dnsseed Policy](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/dnsseed-policy.md)
+- [Benchmarking](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/benchmarking.md)
 
 ### Resources
 - Discuss on chat [Discord](https://discord.gg/jn6uhur), [Telegram](https://t.me/RavencoinDev) or [Reddit](https://www.reddit.com/r/Ravencoin/).
 - Find out more on the [Ravencoin Wiki](https://raven.wiki/wiki/Ravencoin_Wiki)
-- Visit the project home [Ravencoin.org](https://ravencoin.org)
+- Visit the project home [Ravencoin.org](https://blackraven.network/)
 
 ### Miscellaneous
-- [Assets Attribution](https://github.com/RavenProject/Ravencoin/blob/master/doc/assets-attribution.md)
-- [Files](https://github.com/RavenProject/Ravencoin/blob/master/doc/files.md)
-- [Fuzz-testing](https://github.com/RavenProject/Ravencoin/blob/master/doc/fuzzing.md)
-- [Reduce Traffic](https://github.com/RavenProject/Ravencoin/blob/master/doc/reduce-traffic.md)
-- [Tor Support](https://github.com/RavenProject/Ravencoin/blob/master/doc/tor.md)
-- [Init Scripts (systemd/upstart/openrc)](https://github.com/RavenProject/Ravencoin/blob/master/doc/init.md)
-- [ZMQ](https://github.com/RavenProject/Ravencoin/blob/master/doc/zmq.md)
+- [Assets Attribution](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/assets-attribution.md)
+- [Files](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/files.md)
+- [Fuzz-testing](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/fuzzing.md)
+- [Reduce Traffic](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/reduce-traffic.md)
+- [Tor Support](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/tor.md)
+- [Init Scripts (systemd/upstart/openrc)](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/init.md)
+- [ZMQ](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/doc/zmq.md)
 
 License
 ---------------------
-Distributed under the [MIT software license](https://github.com/RavenProject/Ravencoin/blob/master/COPYING).
+Distributed under the [MIT software license](https://github.com/BlackRavenNetwork/BlackRaven/blob/master/COPYING).
 This product includes software developed by the OpenSSL Project for use in the [OpenSSL Toolkit](https://www.openssl.org/). This product includes
 cryptographic software written by Eric Young ([eay@cryptsoft.com](mailto:eay@cryptsoft.com)), and UPnP software written by Thomas Bernard.

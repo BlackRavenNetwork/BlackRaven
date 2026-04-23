@@ -148,7 +148,7 @@ Make the directory for sources and go into it.
 
 __Download Ravencoin source.__
 
-`git clone https://github.com/RavenProject/Ravencoin`
+`git clone https://github.com/BlackRavenNetwork/BlackRaven`
 
 `cd Ravencoin`
 

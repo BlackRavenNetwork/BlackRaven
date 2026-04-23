@@ -68,16 +68,16 @@ SplashScreen::SplashScreen(const NetworkStyle* networkStyle)
 #endif
 
     QPainter pixPaint(&pixmap);
-    pixPaint.setPen(QColor(100,100,100));
+    pixPaint.setPen(QColor(226, 232, 240));
 
-    // draw a slightly radial gradient
-    QRadialGradient gradient(QPoint(0,0), splashSize.width()/devicePixelRatio);
-    gradient.setColorAt(0, Qt::white);
-    gradient.setColorAt(1, QColor(247,247,247));
+    // Radial gradient — BlackRaven dark slate splash
+    QRadialGradient gradient(QPoint(0, 0), splashSize.width() / devicePixelRatio);
+    gradient.setColorAt(0, QColor(30, 41, 59));
+    gradient.setColorAt(1, QColor(15, 23, 42));
     QRect rGradient(QPoint(0,0), splashSize);
     pixPaint.fillRect(rGradient, gradient);
 
-    // draw the raven icon, expected size of PNG: 1024x1024
+    // draw the application icon (resource :/icons/blackraven), ideally high-res PNG
     QRect rectIcon(QPoint(-40,0), QSize(310,310));
 
     const QSize requiredSize(1024,1024);
@@ -193,7 +193,7 @@ static void InitMessage(SplashScreen *splash, const std::string &message)
         Qt::QueuedConnection,
         Q_ARG(QString, QString::fromStdString(message)),
         Q_ARG(int, Qt::AlignBottom|Qt::AlignHCenter),
-        Q_ARG(QColor, QColor(55,55,55)));
+        Q_ARG(QColor, QColor(203, 213, 225)));
 }
 
 static void ShowProgress(SplashScreen *splash, const std::string &title, int nProgress, bool resume_possible)
