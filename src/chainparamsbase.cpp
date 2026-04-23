@@ -45,7 +45,7 @@ class CBaseTestNetParams : public CBaseChainParams
 public:
     CBaseTestNetParams()
     {
-        nRPCPort = 38769;
+        nRPCPort = 49769;
         strDataDir = "testnet4";
     }
 };
@@ -93,11 +93,11 @@ std::string ChainNameFromCommandLine()
     bool fRegTest = gArgs.GetBoolArg("-regtest", false);
     bool fTestNet = gArgs.GetBoolArg("-testnet", false);
 
-    if (fTestNet && fRegTest)
-        throw std::runtime_error("Invalid combination of -regtest and -testnet.");
     if (fRegTest)
-        return CBaseChainParams::REGTEST;
-    if (fTestNet)
-        return CBaseChainParams::TESTNET;
-    return CBaseChainParams::MAIN;
+        throw std::runtime_error("Regtest mode is disabled in this testnet-only build.");
+
+    // Force all default operation to testnet so the release cannot accidentally
+    // run on mainnet when no chain flag is supplied.
+    (void)fTestNet;
+    return CBaseChainParams::TESTNET;
 }

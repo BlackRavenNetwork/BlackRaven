@@ -332,7 +332,7 @@ public:
         pchMessageStart[1] = 0x4c; // L
         pchMessageStart[2] = 0x4b; // K
         pchMessageStart[3] = 0x54; // T (BLKT)
-        nDefaultPort = 38768;
+        nDefaultPort = 49768;
         nPruneAfterHeight = 1000;
 
         genesis = CreateGenesisBlock(
