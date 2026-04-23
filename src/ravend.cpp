@@ -32,7 +32,7 @@
  * \section intro_sec Introduction
  *
  * This is the developer documentation of the reference client for an experimental new digital currency called BlackRaven (https://blackraven.network/),
- * which enables instant payments to anyone, anywhere in the world. Raven uses peer-to-peer technology to operate
+ * which enables instant payments to anyone, anywhere in the world. BlackRaven uses peer-to-peer technology to operate
  * with no central authority: managing transactions and issuing money are carried out collectively by the network.
  *
  * The software is a community-driven open source project, released under the MIT license.
@@ -120,7 +120,7 @@ bool AppInit(int argc, char* argv[])
         // Error out when loose non-argument tokens are encountered on command line
         for (int i = 1; i < argc; i++) {
             if (!IsSwitchChar(argv[i][0])) {
-                fprintf(stderr, "Error: Command line contains unexpected token '%s', see ravend -h for a list of options.\n", argv[i]);
+                fprintf(stderr, "Error: Command line contains unexpected token '%s', see blackravend -h for a list of options.\n", argv[i]);
                 exit(EXIT_FAILURE);
             }
         }
@@ -152,7 +152,7 @@ bool AppInit(int argc, char* argv[])
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 #endif
-            fprintf(stdout, "Raven server starting\n");
+            fprintf(stdout, "%s server starting\n", CLIENT_NAME.c_str());
 
             // Daemonize
             if (daemon(1, 0)) { // don't chdir (1), do close FDs (0)

@@ -9,15 +9,12 @@
 
 #include "base58.h"
 #include "clientversion.h"
-#include "coins.h"
 #include "consensus/consensus.h"
 #include "core_io.h"
-#include "keystore.h"
 #include "policy/policy.h"
 #include "policy/rbf.h"
 #include "primitives/transaction.h"
 #include "script/script.h"
-#include "script/sign.h"
 #include <univalue.h>
 #include "util.h"
 #include "utilmoneystr.h"
@@ -28,7 +25,6 @@
 #include <boost/algorithm/string.hpp>
 
 static bool fCreateBlank;
-static std::map<std::string,UniValue> registers;
 static const int CONTINUE_EXECUTION=-1;
 
 //
@@ -66,9 +62,7 @@ static int AppInitRawTx(int argc, char* argv[])
         strUsage = HelpMessageGroup(_("Options:"));
         strUsage += HelpMessageOpt("-?", _("This help message"));
         strUsage += HelpMessageOpt("-create", _("Create new, empty TX."));
-        strUsage += HelpMessageOpt("-json", _("Select JSON output"));
         strUsage += HelpMessageOpt("-txid", _("Output only the hex-encoded transaction id of the resultant transaction."));
-        AppendParamsHelpMessages(strUsage);
 
         fprintf(stdout, "%s", strUsage.c_str());
 
@@ -90,16 +84,6 @@ static int AppInitRawTx(int argc, char* argv[])
         strUsage += HelpMessageOpt("outmultisig=VALUE:REQUIRED:PUBKEYS:PUBKEY1:PUBKEY2:....[:FLAGS]", _("Add Pay To n-of-m Multi-sig output to TX. n = REQUIRED, m = PUBKEYS") + ". " +
             _("Optionally add the \"W\" flag to produce a pay-to-witness-script-hash output") + ". " +
             _("Optionally add the \"S\" flag to wrap the output in a pay-to-script-hash."));
-        strUsage += HelpMessageOpt("sign=SIGHASH-FLAGS", _("Add zero or more signatures to transaction") + ". " +
-            _("This command requires JSON registers:") +
-            _("prevtxs=JSON object") + ", " +
-            _("privatekeys=JSON object") + ". " +
-            _("See signrawtransaction docs for format of sighash flags, JSON objects."));
-        fprintf(stdout, "%s", strUsage.c_str());
-
-        strUsage = HelpMessageGroup(_("Register Commands:"));
-        strUsage += HelpMessageOpt("load=NAME:FILENAME", _("Load JSON file FILENAME into register NAME"));
-        strUsage += HelpMessageOpt("set=NAME:JSON-STRING", _("Set register NAME to given JSON-STRING"));
         fprintf(stdout, "%s", strUsage.c_str());
 
         if (argc < 2) {
@@ -109,73 +93,6 @@ static int AppInitRawTx(int argc, char* argv[])
         return EXIT_SUCCESS;
     }
     return CONTINUE_EXECUTION;
-}
-
-static void RegisterSetJson(const std::string& key, const std::string& rawJson)
-{
-    UniValue val;
-    if (!val.read(rawJson)) {
-        std::string strErr = "Cannot parse JSON for key " + key;
-        throw std::runtime_error(strErr);
-    }
-
-    registers[key] = val;
-}
-
-static void RegisterSet(const std::string& strInput)
-{
-    // separate NAME:VALUE in string
-    size_t pos = strInput.find(':');
-    if ((pos == std::string::npos) ||
-        (pos == 0) ||
-        (pos == (strInput.size() - 1)))
-        throw std::runtime_error("Register input requires NAME:VALUE");
-
-    std::string key = strInput.substr(0, pos);
-    std::string valStr = strInput.substr(pos + 1, std::string::npos);
-
-    RegisterSetJson(key, valStr);
-}
-
-static void RegisterLoad(const std::string& strInput)
-{
-    // separate NAME:FILENAME in string
-    size_t pos = strInput.find(':');
-    if ((pos == std::string::npos) ||
-        (pos == 0) ||
-        (pos == (strInput.size() - 1)))
-        throw std::runtime_error("Register load requires NAME:FILENAME");
-
-    std::string key = strInput.substr(0, pos);
-    std::string filename = strInput.substr(pos + 1, std::string::npos);
-
-    FILE *f = fopen(filename.c_str(), "r");
-    if (!f) {
-        std::string strErr = "Cannot open file " + filename;
-        throw std::runtime_error(strErr);
-    }
-
-    // load file chunks into one big buffer
-    std::string valStr;
-    while ((!feof(f)) && (!ferror(f))) {
-        char buf[4096];
-        int bread = fread(buf, 1, sizeof(buf), f);
-        if (bread <= 0)
-            break;
-
-        valStr.insert(valStr.size(), buf, bread);
-    }
-
-    int error = ferror(f);
-    fclose(f);
-
-    if (error) {
-        std::string strErr = "Error reading file " + filename;
-        throw std::runtime_error(strErr);
-    }
-
-    // evaluate as JSON buffer register
-    RegisterSetJson(key, valStr);
 }
 
 static CAmount ExtractAndValidateValue(const std::string& strValue)
@@ -243,12 +160,7 @@ static void MutateTxAddInput(CMutableTransaction& tx, const std::string& strInpu
     // Deprecated with RIP2 implementation
     //    static const unsigned int maxVout = MAX_BLOCK_WEIGHT / (WITNESS_SCALE_FACTOR * minTxOutSz);
 
-    unsigned int maxVout = 0;
-    if (fAssetsIsActive) {
-        maxVout = MAX_BLOCK_WEIGHT_RIP2 / (WITNESS_SCALE_FACTOR * minTxOutSz);
-    } else {
-        maxVout = MAX_BLOCK_WEIGHT / (WITNESS_SCALE_FACTOR * minTxOutSz);
-    }
+    unsigned int maxVout = MAX_BLOCK_WEIGHT_RIP2 / (WITNESS_SCALE_FACTOR * minTxOutSz);
 
     // extract and validate vout
     std::string strVout = vStrInputParts[1];
@@ -494,175 +406,6 @@ static void MutateTxDelOutput(CMutableTransaction& tx, const std::string& strOut
     tx.vout.erase(tx.vout.begin() + outIdx);
 }
 
-static const unsigned int N_SIGHASH_OPTS = 6;
-static const struct {
-    const char *flagStr;
-    int flags;
-} sighashOptions[N_SIGHASH_OPTS] = {
-    {"ALL", SIGHASH_ALL},
-    {"NONE", SIGHASH_NONE},
-    {"SINGLE", SIGHASH_SINGLE},
-    {"ALL|ANYONECANPAY", SIGHASH_ALL|SIGHASH_ANYONECANPAY},
-    {"NONE|ANYONECANPAY", SIGHASH_NONE|SIGHASH_ANYONECANPAY},
-    {"SINGLE|ANYONECANPAY", SIGHASH_SINGLE|SIGHASH_ANYONECANPAY},
-};
-
-static bool findSighashFlags(int& flags, const std::string& flagStr)
-{
-    flags = 0;
-
-    for (unsigned int i = 0; i < N_SIGHASH_OPTS; i++) {
-        if (flagStr == sighashOptions[i].flagStr) {
-            flags = sighashOptions[i].flags;
-            return true;
-        }
-    }
-
-    return false;
-}
-
-static CAmount AmountFromValue(const UniValue& value)
-{
-    if (!value.isNum() && !value.isStr())
-        throw std::runtime_error("Amount is not a number or string");
-    CAmount amount;
-    if (!ParseFixedPoint(value.getValStr(), 8, &amount))
-        throw std::runtime_error("Invalid amount (1)");
-    if (!MoneyRange(amount))
-        throw std::runtime_error("Amount out of range");
-    return amount;
-}
-
-static void MutateTxSign(CMutableTransaction& tx, const std::string& flagStr)
-{
-    int nHashType = SIGHASH_ALL;
-
-    if (flagStr.size() > 0)
-        if (!findSighashFlags(nHashType, flagStr))
-            throw std::runtime_error("unknown sighash flag/sign option");
-
-    std::vector<CTransaction> txVariants;
-    txVariants.push_back(tx);
-
-    // mergedTx will end up with all the signatures; it
-    // starts as a clone of the raw tx:
-    CMutableTransaction mergedTx(txVariants[0]);
-    bool fComplete = true;
-    CCoinsView viewDummy;
-    CCoinsViewCache view(&viewDummy);
-
-    if (!registers.count("privatekeys"))
-        throw std::runtime_error("privatekeys register variable must be set.");
-    CBasicKeyStore tempKeystore;
-    UniValue keysObj = registers["privatekeys"];
-
-    for (unsigned int kidx = 0; kidx < keysObj.size(); kidx++) {
-        if (!keysObj[kidx].isStr())
-            throw std::runtime_error("privatekey not a std::string");
-        CRavenSecret vchSecret;
-        bool fGood = vchSecret.SetString(keysObj[kidx].getValStr());
-        if (!fGood)
-            throw std::runtime_error("privatekey not valid");
-
-        CKey key = vchSecret.GetKey();
-        tempKeystore.AddKey(key);
-    }
-
-    // Add previous txouts given in the RPC call:
-    if (!registers.count("prevtxs"))
-        throw std::runtime_error("prevtxs register variable must be set.");
-    UniValue prevtxsObj = registers["prevtxs"];
-    {
-        for (unsigned int previdx = 0; previdx < prevtxsObj.size(); previdx++) {
-            UniValue prevOut = prevtxsObj[previdx];
-            if (!prevOut.isObject())
-                throw std::runtime_error("expected prevtxs internal object");
-
-            std::map<std::string, UniValue::VType> types = {
-                {"txid", UniValue::VSTR},
-                {"vout", UniValue::VNUM},
-                {"scriptPubKey", UniValue::VSTR},
-            };
-            if (!prevOut.checkObject(types))
-                throw std::runtime_error("prevtxs internal object typecheck fail");
-
-            uint256 txid = ParseHashUV(prevOut["txid"], "txid");
-
-            int nOut = atoi(prevOut["vout"].getValStr());
-            if (nOut < 0)
-                throw std::runtime_error("vout must be positive");
-
-            COutPoint out(txid, nOut);
-            std::vector<unsigned char> pkData(ParseHexUV(prevOut["scriptPubKey"], "scriptPubKey"));
-            CScript scriptPubKey(pkData.begin(), pkData.end());
-
-            {
-                const Coin& coin = view.AccessCoin(out);
-                if (!coin.IsSpent() && coin.out.scriptPubKey != scriptPubKey) {
-                    std::string err("Previous output scriptPubKey mismatch:\n");
-                    err = err + ScriptToAsmStr(coin.out.scriptPubKey) + "\nvs:\n"+
-                        ScriptToAsmStr(scriptPubKey);
-                    throw std::runtime_error(err);
-                }
-                Coin newcoin;
-                newcoin.out.scriptPubKey = scriptPubKey;
-                newcoin.out.nValue = 0;
-                if (prevOut.exists("amount")) {
-                    newcoin.out.nValue = AmountFromValue(prevOut["amount"]);
-                }
-                newcoin.nHeight = 1;
-                view.AddCoin(out, std::move(newcoin), true);
-            }
-
-            // if redeemScript given and private keys given,
-            // add redeemScript to the tempKeystore so it can be signed:
-            if ((scriptPubKey.IsPayToScriptHash() || scriptPubKey.IsPayToWitnessScriptHash()) &&
-                prevOut.exists("redeemScript")) {
-                UniValue v = prevOut["redeemScript"];
-                std::vector<unsigned char> rsData(ParseHexUV(v, "redeemScript"));
-                CScript redeemScript(rsData.begin(), rsData.end());
-                tempKeystore.AddCScript(redeemScript);
-            }
-        }
-    }
-
-    const CKeyStore& keystore = tempKeystore;
-
-    bool fHashSingle = ((nHashType & ~SIGHASH_ANYONECANPAY) == SIGHASH_SINGLE);
-
-    // Sign what we can:
-    for (unsigned int i = 0; i < mergedTx.vin.size(); i++) {
-        CTxIn& txin = mergedTx.vin[i];
-        const Coin& coin = view.AccessCoin(txin.prevout);
-        if (coin.IsSpent()) {
-            fComplete = false;
-            continue;
-        }
-        const CScript& prevPubKey = coin.out.scriptPubKey;
-        const CAmount& amount = coin.out.nValue;
-
-        SignatureData sigdata;
-        // Only sign SIGHASH_SINGLE if there's a corresponding output:
-        if (!fHashSingle || (i < mergedTx.vout.size()))
-            ProduceSignature(MutableTransactionSignatureCreator(&keystore, &mergedTx, i, amount, nHashType), prevPubKey, sigdata);
-
-        // ... and merge in other signatures:
-        for (const CTransaction& txv : txVariants)
-            sigdata = CombineSignatures(prevPubKey, MutableTransactionSignatureChecker(&mergedTx, i, amount), sigdata, DataFromTransaction(txv, i));
-        UpdateTransaction(mergedTx, i, sigdata);
-
-        if (!VerifyScript(txin.scriptSig, prevPubKey, &txin.scriptWitness, STANDARD_SCRIPT_VERIFY_FLAGS, MutableTransactionSignatureChecker(&mergedTx, i, amount)))
-            fComplete = false;
-    }
-
-    if (fComplete) {
-        // do nothing... for now
-        // perhaps store this for later optional JSON output
-    }
-
-    tx = mergedTx;
-}
-
 class Secp256k1Init
 {
     ECCVerifyHandle globalVerifyHandle;
@@ -709,28 +452,8 @@ static void MutateTx(CMutableTransaction& tx, const std::string& command,
     else if (command == "outdata")
         MutateTxAddOutData(tx, commandVal);
 
-    else if (command == "sign") {
-        ecc.reset(new Secp256k1Init());
-        MutateTxSign(tx, commandVal);
-    }
-
-    else if (command == "load")
-        RegisterLoad(commandVal);
-
-    else if (command == "set")
-        RegisterSet(commandVal);
-
     else
         throw std::runtime_error("unknown command");
-}
-
-static void OutputTxJSON(const CTransaction& tx)
-{
-    UniValue entry(UniValue::VOBJ);
-    TxToUniv(tx, uint256(), entry);
-
-    std::string jsonOutput = entry.write(4);
-    fprintf(stdout, "%s\n", jsonOutput.c_str());
 }
 
 static void OutputTxHash(const CTransaction& tx)
@@ -742,16 +465,16 @@ static void OutputTxHash(const CTransaction& tx)
 
 static void OutputTxHex(const CTransaction& tx)
 {
-    std::string strHex = EncodeHexTx(tx);
+    CDataStream ssTx(SER_NETWORK, PROTOCOL_VERSION);
+    ssTx << tx;
+    std::string strHex = HexStr(ssTx.begin(), ssTx.end());
 
     fprintf(stdout, "%s\n", strHex.c_str());
 }
 
 static void OutputTx(const CTransaction& tx)
 {
-    if (gArgs.GetBoolArg("-json", false))
-        OutputTxJSON(tx);
-    else if (gArgs.GetBoolArg("-txid", false))
+    if (gArgs.GetBoolArg("-txid", false))
         OutputTxHash(tx);
     else
         OutputTxHex(tx);
@@ -802,8 +525,16 @@ static int CommandLineRawTx(int argc, char* argv[])
             if (strHexTx == "-")                 // "-" implies standard input
                 strHexTx = readStdin();
 
-            if (!DecodeHexTx(tx, strHexTx, true))
+            if (!IsHex(strHexTx)) {
                 throw std::runtime_error("invalid transaction encoding");
+            }
+
+            std::vector<unsigned char> txData(ParseHex(strHexTx));
+            CDataStream ssData(txData, SER_NETWORK, PROTOCOL_VERSION);
+            ssData >> tx;
+            if (!ssData.empty()) {
+                throw std::runtime_error("invalid transaction encoding");
+            }
 
             startArg = 2;
         } else

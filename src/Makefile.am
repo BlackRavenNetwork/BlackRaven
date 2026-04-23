@@ -531,14 +531,15 @@ blackraven_tx_SOURCES += raven-tx-res.rc
 endif
 
 blackraven_tx_LDADD = \
-  $(LIBUNIVALUE) \
   $(LIBRAVEN_COMMON) \
   $(LIBRAVEN_UTIL) \
   $(LIBRAVEN_CONSENSUS) \
   $(LIBRAVEN_CRYPTO) \
+  $(LIBRAVEN_CONSENSUS) \
+  $(LIBRAVEN_CRYPTO) \
   $(LIBSECP256K1)
 
-blackraven_tx_LDADD += $(BOOST_LIBS) $(CRYPTO_LIBS)
+blackraven_tx_LDADD += $(BOOST_LIBS) $(SSL_LIBS) $(CRYPTO_LIBS)
 #
 
 # ravenconsensus library #
