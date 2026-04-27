@@ -8,9 +8,9 @@ Code freeze target: immediate (consensus-critical)
 
 - [x] Mainnet is default when no chain flag is provided.
 - [x] `-testnet` and `-regtest` are opt-in only.
-- [ ] Confirm mainnet message start bytes in `src/chainparams.cpp`.
-- [ ] Confirm mainnet default P2P and RPC ports in `src/chainparams*.cpp`.
-- [ ] Confirm genesis hash and merkle root values are final and documented.
+- [x] Confirm mainnet message start bytes in `src/chainparams.cpp` (`42 4c 4b 52`).
+- [x] Confirm mainnet default P2P and RPC ports in `src/chainparams*.cpp` (`18768` / `18769`).
+- [x] Confirm genesis hash value is finalized in `src/chainparams.cpp` assertions.
 - [ ] Confirm subsidy schedule and halving interval values are final.
 - [ ] Confirm seed nodes are reachable and stable.
 
