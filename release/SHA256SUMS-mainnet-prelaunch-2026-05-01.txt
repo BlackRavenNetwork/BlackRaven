@@ -1,0 +1,4 @@
+85c3a1d5759137b1e3bce1992ab72b18907b3e413e6fd79992911dd9a3bf9665  BlackRaven-v1.0.0-linux-x86_64.tar.gz
+550956bb5c72f040f8e324011b5d0eeaebbf1360d8285d5713e173d3c65f2cb2  BlackRaven-v1.0.0-linux-x86_64-cli-daemon.tar.gz
+e08a09d29e4e68d9b0c4c5b07e10391e2a4bd565e7da710a2715185cd59a9bb0  BlackRaven-v1.0.0-linux-x86_64-cli-daemon-tx.tar.gz
+fd37acd4a0fccd80b429f0e42407aec83e397c709b0970743bff15d9fda4059c  release/win64/BlackRaven-win64-qt-wallet.zip
